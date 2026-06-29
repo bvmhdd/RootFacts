@@ -1,8 +1,8 @@
 export const APP_CONFIG = {
-  detectionConfidenceThreshold: 70,
-  analyzingDelay: 2000,
-  factsGenerationDelay: 2000,
-  detectionRetryInterval: 100
+  detectionConfidenceThreshold: 55,
+  analyzingDelay: 500,
+  factsGenerationDelay: 1000,
+  detectionRetryInterval: 80
 };
 
 export const TONE_CONFIG = {
