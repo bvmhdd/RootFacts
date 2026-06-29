@@ -47,8 +47,8 @@ export class DetectionService {
   async predict(imageElement) {
     if (!this.model) return null;
 
-    // Use tf.tidy to prevent memory leaks
-    return tf.tidy(() => {
+    // Use tf.tidy to prevent memory leaks for intermediate tensors
+    const predictionTensor = tf.tidy(() => {
       // 1. Convert image to tensor
       let tensor = tf.browser.fromPixels(imageElement);
 
@@ -61,21 +61,23 @@ export class DetectionService {
       tensor = tensor.expandDims(0).toFloat().div(tf.scalar(255));
 
       // 4. Predict
-      const prediction = this.model.predict(tensor);
-
-      // 5. Get top result
-      const scores = prediction.dataSync();
-      const maxScoreIndex = scores.indexOf(Math.max(...scores));
-      const confidence = scores[maxScoreIndex] * 100;
-
-      return {
-        label: this.labels[maxScoreIndex],
-        className: this.labels[maxScoreIndex],
-        confidence: confidence,
-        score: confidence / 100,
-        isValid: true
-      };
+      return this.model.predict(tensor);
     });
+
+    // 5. Get top result using async data() to avoid blocking UI
+    const scores = await predictionTensor.data();
+    predictionTensor.dispose();
+
+    const maxScoreIndex = scores.indexOf(Math.max(...scores));
+    const confidence = scores[maxScoreIndex] * 100;
+
+    return {
+      label: this.labels[maxScoreIndex],
+      className: this.labels[maxScoreIndex],
+      confidence: confidence,
+      score: confidence / 100,
+      isValid: true
+    };
   }
 
   isLoaded() {

@@ -51,21 +51,7 @@ export class RootFactsService {
     this.isGenerating = true;
 
     try {
-      let prompt = `Share a super interesting and surprising fun fact about ${vegetableName}:`;
-
-      switch (this.currentTone) {
-      case 'funny':
-        prompt = `Tell a hilarious, laugh-out-loud joke or very funny fact about ${vegetableName}:`;
-        break;
-      case 'professional':
-        prompt = `Provide a detailed scientific, nutritional, and botanical fact about ${vegetableName}:`;
-        break;
-      case 'child':
-        prompt = `Explain a magical and super fun fact about ${vegetableName} for a 5 year old kid:`;
-        break;
-      default:
-        prompt = `Share a super interesting, mind-blowing, and surprising fun fact about ${vegetableName}:`;
-      }
+      let prompt = `Write exactly one sentence describing the vegetable ${vegetableName} in a ${this.currentTone} tone.`;
 
       const result = await this.generator(prompt, {
         max_new_tokens: 200,
