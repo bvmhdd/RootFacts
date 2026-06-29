@@ -51,16 +51,18 @@ export class RootFactsService {
     this.isGenerating = true;
 
     try {
-      let prompt = `Write exactly one sentence describing the vegetable ${vegetableName} in a ${this.currentTone} tone.`;
+      let prompt = `Provide one short, interesting fact about ${vegetableName} in a ${this.currentTone} tone.`;
 
       const result = await this.generator(prompt, {
-        max_new_tokens: 50,
-        temperature: 0.5,
+        max_new_tokens: 60,
+        temperature: 0.6,
         top_p: 0.9,
         do_sample: true
       });
 
-      return result[0]?.generated_text || 'No fact generated.';
+      const generatedFact = result[0]?.generated_text || 'No fact generated.';
+      // Menyambungkan teks generatif secara langsung dengan nama buah/sayur yang ditebak
+      return `Fakta tentang ${vegetableName}: ${generatedFact}`;
     } catch (err) {
       console.error('Gagal menghasilkan fakta:', err);
       throw err;
