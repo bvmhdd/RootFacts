@@ -1,0 +1,127 @@
+Kini, saatnya membuktikan kemampuan tersebut dengan membangun Root Fact App.
+Apa itu Root Fact App?
+Root Fact App adalah aplikasi asisten berbasis web yang dirancang untuk menambah nilai interaktivitas pada pengalaman pengguna melalui kemampuan mengenali jenis sayuran dan menyajikan informasi unik secara otomatis. Aplikasi ini menggabungkan dua fungsionalitas utama.
+1.	Si Mata (Computer Vision): Menggunakan kamera untuk mengenali berbagai jenis sayuran.
+2.	Si Otak (Generative AI): Setelah sayuran dikenali, ia akan menceritakan fakta menarik (fun fact) yang unik tentang sayuran tersebut.
+Mengenal Model yang Digunakan
+Untuk membantu "Si Mata" bekerja, kami telah menyediakan sebuah pre-trained model khusus sayuran. Penting untuk diketahui bahwa model ini dilatih menggunakan metode yang sama dengan yang telah Anda pelajari pada modul sebelumnya. Model ini sudah memiliki kemampuan dasar untuk mengenali label sayuran seperti yang tertera pada berkas metadata.json.
+Apa yang Akan Anda Kerjakan?
+Misi utama Anda pada submission ini adalah menyempurnakan starter project yang telah kami sediakan agar menjadi aplikasi yang memberikan nilai tambah bagi penggunanya.
+Kami telah menyiapkan sebuah TODO list sebagai bantuan agar Anda tetap fokus pada sasaran utama pembelajaran. Namun, Anda tidak harus terpaku sepenuhnya pada instruksi TODO tersebut. Kami sangat mendukung Anda untuk berkreasi dan menggunakan pendekatan atau logika berbeda sesuai pemahaman Anda, selama tujuan utama integrasi AI berhasil dicapai dengan baik. Fokus pengerjaan Anda meliputi.
+•	Mengintegrasikan Model: Melengkapi logika penglihatan (TensorFlow.js) agar aplikasi mampu mengenali sayuran secara langsung melalui kamera.
+•	Membangun Jembatan Logika: Menghubungkan hasil deteksi sayuran ke model bahasa (Transformers.js) untuk menciptakan konten fun fact yang menarik.
+•	Menjamin Ketangguhan: Memastikan aplikasi tetap dapat memberikan informasi meskipun perangkat sedang tidak memiliki koneksi internet (Offline-First) melalui fitur instalasi aplikasi (PWA).
+Selamat mengerjakan. Kami tunggu karya terbaik Anda!
+Catatan:
+Model dilatih menggunakan data sederhana sehingga hasil deteksinya mungkin tidak selalu tepat. Pastikan menguji aplikasi di tempat terang dengan latar belakang yang bebas dari objek lain agar deteksi lebih stabil. Jangan khawatir jika AI salah menebak karena fokus penilaian adalah pada alur kode
+Kami memahami bahwa setiap pengembang memiliki latar belakang dan tingkat keahlian yang berbeda-beda. Oleh karena itu, kami menyediakan tiga jalur pengerjaan yang dapat Anda pilih sesuai dengan tujuan belajar Anda.
+•	Jalur Standar (Basic): Ditujukan bagi Anda yang ingin fokus sepenuhnya pada integrasi AI menggunakan JavaScript murni (Vanilla JS). Jika memilih jalur ini, nilai maksimal yang bisa Anda capai adalah Bintang 4.
+•	Jalur Arsitektur (MVP atau React): Ditujukan bagi Anda yang ingin menguji kemampuan manajemen kode tingkat lanjut menggunakan pola arsitektur Model-View-Presenter (MVP) atau pustaka React. Jalur ini merupakan syarat wajib untuk memenuhi kriteria pengerjaan tingkat lanjut demi mendapatkan nilai maksimal Bintang 5.
+Silakan unduh berkas pendukung sesuai dengan jalur yang Anda pilih:
+•	Starter Project (Basic): starter-project-basic.zip
+•	Starter Project (MVP): starter-project-mvp.zip
+•	Starter Project (React): starter-project-react.zip
+Penting: Untuk mengerjakan kriteria pengerjaan tingkat lanjut (Advanced), Anda diharuskan menggunakan starter project versi MVP atau React.
+Cara Menjalankan Starter Project
+1.	Ekstrak berkas ZIP yang telah diunduh ke folder proyek Anda.
+2.	Bukalah proyek tersebut pada teks editor pilihan Anda.
+3.	Jalankanmenggunakan dua opsi berikut:
+o	Menggunakan Extension VS Code: Live Server
+ 
+o	Menggunakan Node.js Live Server
+ 
+o	(Opsional) Jika menggunakan MVP atau React
+Install dependencies yang diperlukan.
+npm install
+Jalankan development server.
+npm run start-dev // Untuk MVP
+npm run dev // Untuk React
+4.	Buka browser dan akses aplikasi di http://localhost:<port> (port bisa berbeda tergantung konfigurasi).
+Pada berkas starter project, kami telah menyediakan beberapa potongan kode yang dapat membantu Anda dalam pengerjaan submission ini. Silakan buka dan pelajari terlebih dahulu sebelum mulai mengerjakan.
+Dalam mengerjakan proyek ini, ada beberapa kriteria yang perlu Anda penuhi. Kriteria-kriteria tersebut diperlukan agar Anda dapat lulus dari tugas ini.
+Setiap kriteria dapat bernilai 0 sampai 4 points (pts). Untuk lulus dari submission ini, Anda harus mendapatkan minimal 2 points dari setiap kriteria. Submission akan ditolak jika masih terdapat kriteria dengan 0 points.
+Berikut adalah daftar kriteria yang harus Anda penuhi. 
+Kriteria 1: Mengembangkan Fitur Deteksi Sayuran (Computer Vision)
+Memastikan aplikasi berhasil melihat dan memprediksi sayuran menggunakan TensorFlow.js.
+•	Rejected (0):
+o	Aplikasi gagal meminta atau mengakses izin kamera (MediaStream API).
+o	Model TensorFlow.js tidak berhasil dimuat (terjadi error pada console).
+o	Aplikasi tidak menampilkan label hasil prediksi sama sekali pada antarmuka pengguna (UI).
+•	Basic (2):
+o	Fitur streaming kamera aktif dan model TensorFlow.js berhasil dimuat.
+o	Aplikasi dapat menampilkan label nama sayuran secara otomatis saat objek dideteksi.
+•	Skilled (3):
+o	Memenuhi kriteria Basic.
+o	Menerapkan fitur FPS Limit yang dapat dikonfigurasi melalui UI atau kode.
+o	Menampilkan indikator loading atau status seperti "Menunggu Model..." disertai persentase saat inisialisasi awal.
+•	Advanced (4):
+o	Memenuhi kriteria Skilled.
+o	Menerapkan Backend Adaptif: Kode mampu melakukan pengecekan `navigator.gpu` untuk menggunakan WebGPU dengan fallback otomatis ke WebGL.
+o	Manajemen Memori: Secara disiplin menggunakan `tf.tidy()` atau `.dispose()` pada setiap siklus prediksi agar aplikasi tetap ringan di peramban pengguna.
+o	Menggunakan arsitektur MVP atau library React.
+Kriteria 2: Mengintegrasikan Generative AI untuk Konten Fun Fact
+Memastikan aplikasi dapat memproses label prediksi menjadi teks kreatif menggunakan Transformers.js. 
+•	Rejected (0):
+o	Konten Fun Fact bersifat statis (teks yang sama muncul untuk semua jenis sayuran).
+o	Aplikasi tidak menggunakan pustaka Generative AI lokal (Transformers.js) sesuai materi modul.
+o	Teks hasil generasi tidak muncul di UI setelah objek berhasil dideteksi.
+•	Basic (2):
+o	Aplikasi berhasil mengirimkan hasil deteksi (label) ke dalam prompt AI secara dinamis.
+o	Berhasil menampilkan teks Fun Fact unik yang relevan dengan jenis sayuran yang dideteksi.
+•	Skilled (3):
+o	Memenuhi kriteria Basic.
+o	Menerapkan fitur Salin ke Papan Klip (Copy to Clipboard) untuk teks hasil AI.
+o	Mengatur parameter `temperature`, `max_new_tokens`, `top_p`, dan `do_sample` untuk menjaga performa.
+•	Advanced (4):
+o	Memenuhi kriteria Skilled.
+o	Fitur Persona Dinamis: Menyediakan pilihan gaya bahasa (contoh: Gaya "Lucu" atau "Sejarah") melalui elemen dropdown/radio button yang secara otomatis mengubah gaya penulisan AI.
+o	Menerapkan Backend Adaptif: Kode mampu melakukan pengecekan `navigator.gpu` untuk menggunakan WebGPU dengan fallback otomatis ke WebGL.
+Kriteria 3: Menerapkan Offline Capability dan Deployment
+Memastikan aplikasi dapat diakses menggunakan URL publik dan berjalan secara luring (offline).
+•	Rejected (0):
+o	Aplikasi tidak dapat diakses melalui URL production (Netlify).
+o	Berkas Web App Manifest tidak valid atau tidak terdeteksi oleh peramban (ikon dan nama tidak muncul di DevTools Manifest).
+o	Aplikasi langsung blank atau error 404 saat koneksi internet dimatikan (sebelum data masuk cache).
+o	Tidak melampirkan URL hasil deployment dalam STUDENT.txt
+•	Basic (2):
+o	Aplikasi berhasil di-deploy ke Netlify.
+o	Berhasil mengonfigurasi Web App Manifest dan Service Worker menggunakan Workbox.
+o	Menerapkan Precaching pada aset inti (HTML, CSS, dan JS) agar aplikasi tetap dapat terbuka meski tanpa internet.
+o	Melampirkan URL hasil deployment dalam STUDENT.txt
+•	Skilled (3):
+o	Memenuhi kriteria Basic.
+o	Implementasi Linter: Menyertakan konfigurasi linter (seperti ESLint) di dalam proyek untuk menjaga konsistensi gaya penulisan kode di seluruh berkas.
+o	Aplikasi Dapat Diinstal: Berhasil mengonfigurasi Web App Manifest secara lengkap dan meregistrasikan Service Worker dengan benar sehingga aplikasi dikenali oleh browser sebagai aplikasi yang dapat diinstal (muncul tombol "Install" di address bar atau perintah "Add to Home Screen").
+•	Advanced (4):
+o	Memenuhi kriteria Skilled.
+o	Offline AI Model: Berhasil melakukan Precaching pada berkas model AI (file `.json` dan `.bin`) di `sw.js` sehingga proses deteksi tetap berfungsi meski dalam mode pesawat/tanpa internet.
+Kriteria 1: Mengembangkan Fitur Deteksi Sayuran (Computer Vision)
+•	Gunakan library TensorFlow.js yang sama dengan versi latihan. Jika terdapat pembaruan gunakan versi yang spesifik seperti berikut.
+https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js
+•	Ketika menerapkan strategi Backend Adaptif, Anda akan menemukan error berikut jika belum menyertakan pemanggilan library `tfjs-backend-webgpu`.
+ 
+Kriteria 2: Mengintegrasikan Generative AI untuk Konten Fun Fact
+•	Karena keterbatasan konteks bahasa, berikan prompt menggunakan bahasa Inggris. 
+•	Gunakan pengaturan `max_new_tokens` maksimal 150 token agar proses generasi teks tetap responsif dan tidak menyebabkan browser pengguna menjadi macet atau 'freeze' karena beban komputasi lokal yang terlalu berat.
+•	Untuk mengerjakan tugas sederhana, Anda dapat menggunakan konfigurasi `{ dtype: “q4” }` agar library Transformers.js tidak mengunduh versi full dari model yang sedang digunakan.
+•	Gunakan `await navigator.clipboard.writeText(<generative-text>);` untuk membuat fitur copy to clipboard.
+Kriteria 3: Menerapkan Offline Capability dan Deployment
+•	Pastikan berkas service worker sudah aktif melalui Developers Tools berikut.
+ 
+•	Sebelum mengirimkan submission, pastikan berkas cache dapat ditemukan pada Cache Storage.
+ 
+•	Perhitungan Nilai
+•	Nilai akhir yang Anda dapatkan diperoleh melalui perhitungan formula berikut.
+Nilai Akhir = Total Points / Jumlah Kriteria
+•	Catatan:
+Perhitungan nilai akhir di atas digunakan apabila setiap kriteria mendapatkan nilai 2 pts atau tidak ada kriteria yang ditolak.
+•	Tabel Penilaian: 
+Adapun untuk penilaian submission dapat dilihat pada tabel berikut.
+Ketentuan Penilaian
+Nilai Akhir	Nilai Dicoding	Nilai Huruf	Level of Mastery	Makna Nilai	Keterangan
+< 1	Rejected	E	-	Tidak Lulus	Anda sudah mencoba, tetapi belum memenuhi kompetensi minimal.
+1 - < 2	Bintang 2	D	Bellow Basic	Kurang	Anda sudah memenuhi semua kompetensi minimal, tetapi terdapat area yang masih bisa ditingkatkan.
+2 - < 3	Bintang 3	C	Basic	Cukup	Anda sudah memenuhi semua kompetensi minimal dari learning objective.
+3 - < 4	Bintang 4	B	Skilled	Mahir	Anda sudah memenuhi semua kompetensi dengan baik atau mahir.
+4	Bintang 5	A	Advanced	Tingkat Lanjut	Anda sudah memenuhi semua kompetensi dengan sangat baik atau tingkat lanjut.
+
