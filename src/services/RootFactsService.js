@@ -15,6 +15,7 @@ export class RootFactsService {
     // Force WebAssembly (wasm) for Transformers.js instead of WebGPU
     // WebGPU shader compilation for T5 decoders can freeze the browser on some devices.
     this.currentBackend = 'wasm';
+    env.backends.onnx.wasm.numThreads = 1; // FIX: Prevent SharedArrayBuffer crash on Netlify
     console.log('Transformers.js menggunakan WebAssembly');
     
     // Pastikan env cache dimatikan jika error offline
