@@ -54,9 +54,9 @@ export class RootFactsService {
       let prompt = `Write exactly one sentence describing the vegetable ${vegetableName} in a ${this.currentTone} tone.`;
 
       const result = await this.generator(prompt, {
-        max_new_tokens: 200,
-        temperature: 0.9,
-        top_p: 0.95,
+        max_new_tokens: 50,
+        temperature: 0.5,
+        top_p: 0.9,
         do_sample: true
       });
 
