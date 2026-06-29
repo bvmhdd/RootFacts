@@ -22,7 +22,7 @@ Pastikan Anda telah memasang **Node.js** di komputer Anda.
 
 1. Lakukan _clone repository_ ini:
    ```bash
-   git clone https://github.com/USERNAME/NAMA-REPOSITORY.git
+   git clone https://github.com/bvmhdd/RootFacts.git
    ```
 2. Masuk ke direktori proyek:
    ```bash
