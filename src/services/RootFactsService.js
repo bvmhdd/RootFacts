@@ -51,13 +51,13 @@ export class RootFactsService {
     this.isGenerating = true;
 
     try {
-      let prompt = `Provide one short, interesting fact about ${vegetableName} in a ${this.currentTone} tone.`;
+      let prompt = `Provide a detailed description and interesting fact about the vegetable ${vegetableName} with a ${this.currentTone} tone in 2 sentences.`;
 
       const result = await this.generator(prompt, {
-        max_new_tokens: 60,
-        temperature: 0.6,
-        top_p: 0.9,
-        do_sample: true
+        max_new_tokens: 150,
+        temperature: 0.3,
+        do_sample: false,
+        repetition_penalty: 1.2
       });
 
       const generatedFact = result[0]?.generated_text || 'No fact generated.';

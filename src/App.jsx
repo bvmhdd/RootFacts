@@ -15,6 +15,11 @@ function App() {
   const lastDetectionTime = useRef(0);
   const [currentTone, setCurrentTone] = useState('normal');
 
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -84,13 +89,14 @@ function App() {
   }, []);
 
   const detectLoop = useCallback(async () => {
-    if (!isRunningRef.current || !state.services.detector || !state.services.camera) return;
+    const currentState = stateRef.current;
+    if (!isRunningRef.current || !currentState.services.detector || !currentState.services.camera) return;
 
     try {
-      if (state.services.camera.isReady() && state.appState === 'idle') {
+      if (currentState.services.camera.isReady() && currentState.appState === 'idle') {
         const now = Date.now();
         if (now - lastDetectionTime.current >= APP_CONFIG.detectionRetryInterval) {
-          const result = await state.services.detector.predict(state.services.camera.video);
+          const result = await currentState.services.detector.predict(currentState.services.camera.video);
 
           if (isValidDetection(result)) {
             lastDetectionTime.current = now;
@@ -100,27 +106,25 @@ function App() {
             setTimeout(async () => {
               if (!isRunningRef.current) return;
               try {
-                const fact = await state.services.generator.generateFacts(result.label);
+                const fact = await stateRef.current.services.generator.generateFacts(result.label);
                 actions.setFunFactData(fact);
 
-                setTimeout(() => {
-                  if (isRunningRef.current) {
-                    actions.resetResults();
-                    detectionCleanupRef.current = requestAnimationFrame(detectLoop);
-                  }
-                }, APP_CONFIG.factsGenerationDelay + 3000);
+                actions.setRunning(false);
+                if (stateRef.current.services.camera) {
+                  stateRef.current.services.camera.stopCamera();
+                }
 
                 return;
               } catch (err) {
                 actions.setError(`Gagal menghasilkan fakta: ${  err.message}`);
                 actions.setFunFactData('error');
 
-                setTimeout(() => {
-                  if (isRunningRef.current) {
-                    actions.resetResults();
-                    detectionCleanupRef.current = requestAnimationFrame(detectLoop);
-                  }
-                }, 3000);
+                actions.setRunning(false);
+                if (stateRef.current.services.camera) {
+                  stateRef.current.services.camera.stopCamera();
+                }
+
+                return;
               }
             }, APP_CONFIG.analyzingDelay);
             return;
@@ -132,7 +136,7 @@ function App() {
     }
 
     detectionCleanupRef.current = requestAnimationFrame(detectLoop);
-  }, [state.services, state.appState, actions]);
+  }, [actions]);
 
   const handleToggleCamera = async (cameraType) => {
     if (state.isRunning) {
@@ -153,7 +157,7 @@ function App() {
       if (detectionCleanupRef.current) {
         cancelAnimationFrame(detectionCleanupRef.current);
       }
-      actions.resetResults();
+      // do not reset results when stopping, so the user can read the fun fact
     }
   }, [state.isRunning, detectLoop, actions]);
 
