@@ -24,7 +24,7 @@ export class RootFactsService {
     try {
       this.generator = await pipeline(
         'text2text-generation',
-        'Xenova/flan-t5-small',
+        'Xenova/LaMini-Flan-T5-77M',
         {
           device: this.currentBackend,
           dtype: 'q4',
@@ -51,18 +51,31 @@ export class RootFactsService {
     this.isGenerating = true;
 
     try {
-      let prompt = `Provide a detailed description and interesting fact about the vegetable ${vegetableName} with a ${this.currentTone} tone in 2 sentences.`;
+      const MAX_THEME_LENGTH = 30;
+      let sanitizedName = (vegetableName || '')
+        .replace(/[|]{2,}/g, '')
+        .replace(/[#=]{2,}/g, '')
+        .replace(/(--|\+\+|``)/g, '')
+        .replace(/\n/g, ' ')
+        .trim();
+
+      if (!sanitizedName || sanitizedName.length > MAX_THEME_LENGTH) {
+        sanitizedName = 'vegetable';
+      }
+
+      let prompt = `Describe vegetable ${sanitizedName} in a ${this.currentTone} way with one sentence, focusing on its health benefits or nutritional value for the human body.`;
 
       const result = await this.generator(prompt, {
         max_new_tokens: 150,
-        temperature: 0.3,
-        do_sample: false,
+        temperature: 0.8,
+        do_sample: true,
+        top_p: 0.9,
         repetition_penalty: 1.2
       });
 
       const generatedFact = result[0]?.generated_text || 'No fact generated.';
       // Menyambungkan teks generatif secara langsung dengan nama buah/sayur yang ditebak
-      return `Fakta tentang ${vegetableName}: ${generatedFact}`;
+      return `${generatedFact}`;
     } catch (err) {
       console.error('Gagal menghasilkan fakta:', err);
       throw err;
